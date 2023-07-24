@@ -1,0 +1,35 @@
+1. contactInfo.jsx
+지금은 이름과 전화번호가 함께 떠있는데 주소록에서 이름만 보여주고 이름을 클릭했을 때, 상세정보로 전화번호를 보여주기 위해서 먼저 contactInfo.jsx를 수정
+- this.props.contact.phone을 지우고 name만 남겨둠
+
+
+2. contact.jsx
+ - _nameClick이라는 메소드를 만듦. 파라미터는 key -> 이 메소드가 실행되면 state가 수정되도록 함.
+ - 일단, 위의 state에 selectedKey라는 state를 추가해주고 기본값은 -1로 설정함.
+  ->메소드가 실행되면 selectedKey state를 받아온 key로 설정하도록 함. 
+
+3. contact.jsx
+ - component mapping 부분을 수정
+  -> contactInfo를 렌더링할 때, 컴포넌트가 클릭되었을때 이벤트가 발생하도록 설정해줌 
+**새로 알게 된 점.
+리액트 컴포넌트는 onclick과 같은 이벤트를 지정할 수 없기 때문에 props로 전달되어야하고 
+contactInfo 컴포넌트에서 props를 onclick 이벤트로 연결시켜줘야한다고 합니다.
+
+4. contactDetail.jsx
+- contact의 상세 정보를 알려주는 contactDetail 컴포넌트를 만들었는데,
+---컴포넌트가 선택되었을때와 선택되지 않았을때를 구분하기 위해서 const details와 const blank를 나누었습니다.
+--- 그다음에 밑에서 props를 받을건데, 만약 isSelected라는 props가 true면 details를 렌더링하고 그렇지 않으면 blank를 렌더링하도록했습니다.
+
+5. 다시 contact.jsx로 넘어와서,
+- contactDetail에 props를 전달해주기 위해, isSelected는 this.state의 selectedKey가 -1이 아니라고 해주고 selectedKey가 -1이 아니라는 말은 즉, 초기화 값이 아니고 값이 있다는 소리고 그렇다면  contactDetail 컴포넌트에 참을 전달하게 됩니다. 
+
+6. contact.jsx ->참을 전달하게 되면 이제 선택된 값이 전달이 되어야 하니까, 
+ 그다음은 선택을 했을 때 이 state의 contactData배열의 selectedKey번째 item을 props로 contackDetail로 전달해줬습니다. 
+- 그래서 contactDetail.jsx에서,
+contactData배열의 selectedKey번째 item의 이름과 전화번호가 렌더링되고, 만약 전달된게 없다면(isSelected가 -1이라면), blank 상태이기 때문에 not seleted가 렌더링 됩니다.
+
+**여기서 또 중요한점, 
+- contact의 기본값을 설정해주지 않으면 선택을 하지 않았을 때 undefine name이라는 오류가 뜸
+-> ContactDetail4의 defaultProps을 설정해줘야 한다고 합니다. 그래서 name과 phone을 비어있는 상태로 설정해놨습니다.
+
+
